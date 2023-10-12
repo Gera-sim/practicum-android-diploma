@@ -1,11 +1,12 @@
 package ru.practicum.android.diploma.search.data.dto.response_models
 
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
+
 data class Area(
     val id: String? = "",
     val name: String? = "",
+    @SerializedName("parent_id")
     val parentId: String? = "",
 ) {
     companion object {
