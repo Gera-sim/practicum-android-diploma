@@ -6,6 +6,7 @@ interface FilterInteractor {
         industry: String?,
         expectedSalary: String?,
         removeNoSalary: Boolean,
+        areaId: String?,
     )
 
     fun getLocation(): String

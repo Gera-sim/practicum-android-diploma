@@ -19,8 +19,8 @@ import ru.practicum.android.diploma.common.utils.Constants.SEARCH_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.common.utils.debounce
 import ru.practicum.android.diploma.core.root.RootActivity
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
-import ru.practicum.android.diploma.search.data.dto.response_models.VacancyItem
 import ru.practicum.android.diploma.search.domain.models.SearchVacancyResult
+import ru.practicum.android.diploma.search.domain.models.Vacancy
 import ru.practicum.android.diploma.search.presentation.models.SearchUIState
 import ru.practicum.android.diploma.search.presentation.rv.VacancyAdapter
 import ru.practicum.android.diploma.search.presentation.view_model.SearchViewModel
@@ -28,17 +28,18 @@ import ru.practicum.android.diploma.vacancy.presentation.VacancyFragment
 
 class SearchFragment : Fragment() {
     private val viewModel by viewModel<SearchViewModel>()
-    private val vacancyList = ArrayList<VacancyItem>()
+    private val vacancyList = ArrayList<Vacancy>()
     private val handler = Handler(Looper.getMainLooper())
-    private val vacancySearchRunnable = Runnable { viewModel.searchVacancies(binding.searchEditText.text.toString()) }
-    private lateinit var onVacancyClickDebounce: (VacancyItem) -> Unit
+    private val vacancySearchRunnable =
+        Runnable { viewModel.searchVacancies(binding.searchEditText.text.toString()) }
+    private lateinit var onVacancyClickDebounce: (Vacancy) -> Unit
     private val vacancyAdapter = VacancyAdapter(vacancyList)
     private lateinit var binding: FragmentSearchBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
@@ -48,7 +49,11 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
         observeViewModel()
-        onVacancyClickDebounce = debounce<VacancyItem>(CLICK_DEBOUNCE_DELAY_MILLIS, viewLifecycleOwner.lifecycleScope, false) { item ->
+        onVacancyClickDebounce = debounce<Vacancy>(
+            CLICK_DEBOUNCE_DELAY_MILLIS,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) { item ->
             navigateToVacancyDetail(item)
         }
     }
@@ -83,6 +88,7 @@ class SearchFragment : Fragment() {
         vacancyList.clear()
         vacancyAdapter.notifyDataSetChanged()
         handler.removeCallbacks(vacancySearchRunnable)
+        println("Test")
     }
 
     private fun observeViewModel() {
@@ -91,10 +97,11 @@ class SearchFragment : Fragment() {
                 is SearchVacancyResult.Error -> updateUI(SearchUIState.CONNECTION_ERROR)
                 SearchVacancyResult.EmptyResult -> updateUI(SearchUIState.EMPTY_SEARCH)
                 SearchVacancyResult.NoInternet -> updateUI(SearchUIState.NO_INTERNET)
-                is SearchVacancyResult.Success -> showVacancy(state.response.items)
+                is SearchVacancyResult.Success -> showVacancy(state.response.vacancies)
             }
         }
     }
+
     private fun updateUI(searchUIState: SearchUIState) {
         with(binding) {
             recyclerView.visibility = View.GONE
@@ -103,19 +110,23 @@ class SearchFragment : Fragment() {
                 SearchUIState.CONNECTION_ERROR -> {
                     searchPlaceholder.setImageResource(0)
                     searchPlaceholder.setImageResource(R.drawable.placeholder_sad)
+
                     vacancyList.clear()
                 }
+
                 SearchUIState.EMPTY_SEARCH -> {
                     searchPlaceholder.setImageResource(0)
                     searchPlaceholder.setImageResource(R.drawable.placeholder_cat)
                     vacancyList.clear()
                 }
+
                 SearchUIState.NO_INTERNET -> {
                     searchPlaceholder.setImageResource(0)
                     searchPlaceholder.setImageResource(R.drawable.placeholder_skull)
                     vacancyList.clear()
 
                 }
+
                 SearchUIState.LOADING -> TODO()
             }
             searchPlaceholder.visibility = View.VISIBLE
@@ -127,7 +138,8 @@ class SearchFragment : Fragment() {
             handler.removeCallbacks(vacancySearchRunnable)
         }
     }
-    private fun showVacancy(items: List<VacancyItem>) {
+
+    private fun showVacancy(items: List<Vacancy>) {
         with(binding) {
             recyclerView.visibility = View.VISIBLE
             searchPlaceholder.visibility = View.GONE
@@ -136,12 +148,14 @@ class SearchFragment : Fragment() {
         vacancyList.addAll(items)
         vacancyAdapter.notifyDataSetChanged()
     }
+
     private fun setupRecyclerView() {
         with(binding.recyclerView) {
             adapter = vacancyAdapter
             layoutManager = LinearLayoutManager(context)
         }
     }
+
     private fun setupTextWatcher() {
         val searchTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -168,8 +182,16 @@ class SearchFragment : Fragment() {
         binding.searchEditText.addTextChangedListener(searchTextWatcher)
     }
 
+
+    private fun navigateToVacancyDetail(item: Vacancy) {
+        findNavController().navigate(
+            R.id.action_searchFragment_to_vacancyFragment,
+            VacancyFragment.createArgs(item)
+        )
+=======
     private fun navigateToVacancyDetail(item: VacancyItem) {
         findNavController().navigate(R.id.action_searchFragment_to_vacancyFragment,
             VacancyFragment.createArgs(item))
+
     }
 }

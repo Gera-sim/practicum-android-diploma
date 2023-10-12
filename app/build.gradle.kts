@@ -4,6 +4,7 @@ plugins {
     id("kotlin-parcelize")
     id("kotlin-kapt")
     id("ru.practicum.android.diploma.plugins.developproperties")
+    id ("org.jetbrains.kotlin.plugin.serialization") version "1.6.10"
 }
 kotlin {
 }

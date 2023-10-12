@@ -112,7 +112,7 @@
             android:background="@null"
             style="@style/Text_Regular_16_400"
             android:hint="@string/enter_amount"
-            android:inputType="number"
+            android:inputType="numberSigned"
             android:paddingHorizontal="@dimen/margin_16"
             android:paddingTop="@dimen/margin_16"
             android:singleLine="true"
@@ -167,12 +167,13 @@
             android:textColor="?attr/text_color"
             />
 
-        <CheckBox
+        <Button
             android:id="@+id/no_salary_checkbox"
             android:layout_width="@dimen/margin_18"
             android:layout_height="@dimen/margin_18"
-            android:buttonTint="@color/blue"
-            android:clickable="false" />
+            android:background="@drawable/empty_check_box"
+            android:clickable="false"
+            />
     </LinearLayout>
 
     <Button

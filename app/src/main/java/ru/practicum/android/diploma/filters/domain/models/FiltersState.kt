@@ -6,4 +6,5 @@ class FiltersState(
     var industry: String?,
     var lowestSalary: String?,
     var removeNoSalary: Boolean,
+    var areaId: String?
 )

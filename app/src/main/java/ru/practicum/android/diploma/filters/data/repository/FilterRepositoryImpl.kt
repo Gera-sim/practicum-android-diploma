@@ -11,6 +11,7 @@ class FilterRepositoryImpl(
         industry: String?,
         expectedSalary: String?,
         removeNoSalary: Boolean,
+        areaId: String?,
     ) {
         val country: String?
         var region: String? = null
@@ -26,6 +27,7 @@ class FilterRepositoryImpl(
             .putString(INDUSTRY_KEY, industry)
             .putString(EXPECTED_SALARY_KEY, expectedSalary)
             .putBoolean(NO_SALARY_KEY, removeNoSalary)
+            .putString(AREA_ID_KEY, areaId)
             .apply()
     }
 
@@ -60,5 +62,6 @@ class FilterRepositoryImpl(
         const val INDUSTRY_KEY = "INDUSTRY_KEY"
         const val EXPECTED_SALARY_KEY = "EXPECTED_SALARY_KEY"
         const val NO_SALARY_KEY = "NO_SALARY_KEY"
+        const val AREA_ID_KEY = "AREA_ID_KEY"
     }
 }

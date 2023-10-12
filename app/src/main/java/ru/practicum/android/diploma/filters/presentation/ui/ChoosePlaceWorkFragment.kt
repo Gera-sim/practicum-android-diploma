@@ -10,18 +10,27 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import kotlinx.serialization.json.Json
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.utils.ChangeTextFieldUtil
 import ru.practicum.android.diploma.databinding.FragmentSelectLocationBinding
+import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
+import ru.practicum.android.diploma.filters.domain.models.ChooseResult
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.BUNDLE_KEY
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseCountryFragment.Companion.KEY
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseRegionFragment.Companion.KEY_R
 import ru.practicum.android.diploma.filters.presentation.ui.ChooseRegionFragment.Companion.REGION_KEY
+import ru.practicum.android.diploma.filters.presentation.view_model.FiltersViewModel
+import ru.practicum.android.diploma.search.data.dto.response_models.Area
 
 class ChoosePlaceWorkFragment : Fragment() {
     private lateinit var binding: FragmentSelectLocationBinding
-    private lateinit var country: String
-    private lateinit var region: String
+    private var country: String = ""
+    private var region: Area = Area.emptyArea
+    private val viewModel by viewModel<FiltersViewModel>()
+    private var areasList = ArrayList<AreasDTO>()
+    private var area = ArrayList<AreasDTO>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,12 +43,15 @@ class ChoosePlaceWorkFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        getCountry()
         setFilters()
+        observeViewModel()
         showChooseBtn()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getCountry()
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -55,9 +67,10 @@ class ChoosePlaceWorkFragment : Fragment() {
             findNavController().navigate(R.id.action_choosePlaceWorkFragment_to_chooseRegionFragment)
         }
         binding.regionClearBtn.setOnClickListener {
-            binding.regionEditText.text?.clear()
-            changeRegionField()
+            //binding.regionEditText.text?.clear()
+            region = Area.emptyArea
             showChooseBtn()
+            changeRegionField()
         }
         binding.btnChoose.setOnClickListener {
             chooseFilters()
@@ -74,15 +87,25 @@ class ChoosePlaceWorkFragment : Fragment() {
         }
         setFragmentResultListener(KEY_R)
         { _, bundle ->
-            region = bundle.getString(REGION_KEY).orEmpty()
-            if (region.isNotEmpty()) {
-                binding.regionEditText.setText(region)
+            region = (bundle.getString(REGION_KEY)?.let { Json.decodeFromString<Area>(it) }
+                ?: Area.emptyArea)
+            if (region != Area.emptyArea) {
+                binding.regionEditText.setText(region.name)
             }
+        }
+        if (region != Area.emptyArea) {
+            areasList.removeIf { it.id != region.parentId }
+            area.addAll(areasList)
+            binding.countryEditText.setText(area[0].name)
+            country = area[0].name
         }
         changeCountryField()
         changeRegionField()
     }
 
+    private fun getCountry() {
+        viewModel.getCountry()
+    }
 
     private fun changeCountryField() {
         ChangeTextFieldUtil.changeTextField(
@@ -102,33 +125,42 @@ class ChoosePlaceWorkFragment : Fragment() {
         )
     }
 
+    private fun observeViewModel() {
+        viewModel.chooseResult.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                ChooseResult.EmptyResult -> {}
+                is ChooseResult.Error -> {}
+                ChooseResult.NoInternet -> {}
+                is ChooseResult.Success -> areasList.addAll(state.response)
+            }
+        }
+    }
+
     private fun chooseFilters() {
-        /*  if (country.isNullOrEmpty()) {
-              binding.btnChoose.visibility = View.GONE
-          } else {
-              binding.btnChoose.visibility = View.VISIBLE*/
-        if (region.isNullOrEmpty()) {
+        if (region == Area.emptyArea) {
             setFragmentResult(
                 KEY_CHOOSE,
-                bundleOf(PLACE_WORK to country)
+                bundleOf(PLACE_WORK to country, AREA_ID to area[0].id)
             )
         } else {
-            val result = "$country,$region"
+            val result = "$country,${region.name}"
             setFragmentResult(
                 KEY_CHOOSE,
-                bundleOf(PLACE_WORK to result)
+                bundleOf(PLACE_WORK to result, AREA_ID to region.id)
             )
         }
         findNavController().navigateUp()
     }
 
     private fun showChooseBtn() {
-        region = binding.regionEditText.text.toString()
+        //region = Area("", binding.regionEditText.text.toString(), "")
+        binding.regionEditText.setText(region.name)
         binding.btnChoose.isVisible = !binding.countryEditText.text.isNullOrEmpty()
     }
 
     companion object {
         const val KEY_CHOOSE = "key_choose"
         const val PLACE_WORK = "place_work"
+        const val AREA_ID = "AREA_ID"
     }
 }

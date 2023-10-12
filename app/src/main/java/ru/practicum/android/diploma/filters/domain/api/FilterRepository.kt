@@ -6,6 +6,7 @@ interface FilterRepository {
         industry: String?,
         expectedSalary: String?,
         removeNoSalary: Boolean,
+        areaId: String?,
     )
 
     fun getLocation(): String

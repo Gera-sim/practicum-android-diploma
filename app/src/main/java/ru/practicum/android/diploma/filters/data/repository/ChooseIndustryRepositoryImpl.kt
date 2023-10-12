@@ -5,32 +5,33 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.filters.data.converter.FilterModelConverter
-import ru.practicum.android.diploma.filters.domain.api.ChooseRegionRepository
-import ru.practicum.android.diploma.filters.domain.models.ChooseRegionsResult
+import ru.practicum.android.diploma.filters.domain.api.ChooseIndustryRepository
+import ru.practicum.android.diploma.filters.domain.models.ChooseIndustryResult
 import ru.practicum.android.diploma.search.data.network.ApiService
 import ru.practicum.android.diploma.search.data.network.ConnectivityHelper
 
-class ChooseRegionRepositoryImpl(
+class ChooseIndustryRepositoryImpl(
     private val apiService: ApiService,
     private val networkControl: ConnectivityHelper,
-    private val convertor: FilterModelConverter,
-) : ChooseRegionRepository {
-    override suspend fun getRegions(): Flow<ChooseRegionsResult> =
+    private val filterModelConverter: FilterModelConverter,
+) : ChooseIndustryRepository {
+    override suspend fun getIndustry(): Flow<ChooseIndustryResult> =
         flow {
             try {
                 if (!networkControl.isInternetAvailable()) {
-                    emit(ChooseRegionsResult.NoInternet)
+                    emit(ChooseIndustryResult.NoInternet)
                     return@flow
                 }
-                val response = apiService.getAreas()
-                val list = convertor.regionDTOListToAreaList(response)
-                if (response.isEmpty()) {
-                    emit(ChooseRegionsResult.EmptyResult)
+                val response = apiService.getIndustries()
+                val list = filterModelConverter.industryDTOListToIndustryList(response)
+                if (list.isEmpty()) {
+                    emit(ChooseIndustryResult.EmptyResult)
                 } else {
-                    emit(ChooseRegionsResult.Success(list))
+                    emit(ChooseIndustryResult.Success(list))
                 }
             } catch (e: Exception) {
-                emit(ChooseRegionsResult.Error(e))
+                emit(ChooseIndustryResult.Error(e))
             }
         }.flowOn(Dispatchers.IO)
+
 }

@@ -65,22 +65,29 @@ class ChooseCountryFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.chooseResult.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is ChooseResult.EmptyResult -> {
-
-                }
-
-                is ChooseResult.Error -> TODO()
-                ChooseResult.NoInternet -> TODO()
+                is ChooseResult.EmptyResult -> showError()
+                is ChooseResult.Error -> showError()
+                ChooseResult.NoInternet -> showError()
                 is ChooseResult.Success -> showCountry(state.response)
             }
         }
     }
 
     private fun showCountry(countries: List<AreasDTO>) {
+        hideError()
+        countryList.clear()
         countryList.addAll(countries.slice(listOf(0, 1, 2, 3, 4, 5, 7, 8, 6)))
         countryAdapter.notifyDataSetChanged()
     }
+    private fun showError(){
+        binding.noInternetImage.visibility = View.VISIBLE
+        binding.noInternetText.visibility = View.VISIBLE
+    }
 
+    private fun hideError(){
+        binding.noInternetImage.visibility = View.GONE
+        binding.noInternetText.visibility = View.GONE
+    }
     private fun getCountry() {
         viewModel.getCountry()
     }

@@ -6,6 +6,7 @@ import retrofit2.http.Path
 import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.filters.data.dto.models.AreasDTO
+import ru.practicum.android.diploma.filters.data.dto.models.CategoriesDTO
 import ru.practicum.android.diploma.filters.data.dto.models.CountryDTO
 import ru.practicum.android.diploma.filters.data.dto.models.IndustryDTO
 import ru.practicum.android.diploma.search.data.dto.VacanciesResponse
@@ -59,4 +60,11 @@ interface ApiService {
     )
     @GET("/areas/countries")
     suspend fun getCountry(): List<CountryDTO>
+
+    @Headers(
+        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+        "HH-User-Agent: HH_vacancy_search (g-926@ya.ru)"
+    )
+    @GET("/professional_roles")
+    suspend fun getSpecializations(): CategoriesDTO
 }

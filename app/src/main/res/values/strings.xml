@@ -68,11 +68,14 @@
     //Плейсхолдеры ошибок
     <string name="error_no_internet">Нет интернета</string>
     <string name="error_no_vacancies">Не удалось получить список вакансий</string>
-    <string name="error_get_list">Не удалось получить список</string>
+    <string name="error_get_list">Не удалось получить \n список</string>
     <string name="error_wrong_region">Такого региона нет</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="from">от</string>
     <string name="to">до</string>
+
+    <string name="salary_not_specified_">Зарплата не указана</string>
+
     <string name="salary_not_specified">ЗП не указана</string>
     <string name="no_data">Нет днных[</string>
 

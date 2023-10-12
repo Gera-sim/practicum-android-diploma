@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.search.data.dto.response_models
 
-data class VacancyItem(
+data class VacancyItemDto(
     val id: String,
     val area: Area?,
     val name: String? = "",

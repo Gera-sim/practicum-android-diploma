@@ -11,12 +11,14 @@ class FilterInteractorImpl(
         industry: String?,
         expectedSalary: String?,
         removeNoSalary: Boolean,
+        areaId: String?,
     ) {
         filterRepository.saveFilters(
             location,
             industry,
             expectedSalary,
-            removeNoSalary
+            removeNoSalary,
+            areaId,
         )
     }
 

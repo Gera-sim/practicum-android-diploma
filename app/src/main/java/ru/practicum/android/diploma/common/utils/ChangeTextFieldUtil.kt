@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.common.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.ImageButton
 import com.google.android.material.textfield.TextInputEditText
@@ -7,6 +8,7 @@ import com.google.android.material.textfield.TextInputLayout
 import ru.practicum.android.diploma.R
 
 object ChangeTextFieldUtil {
+    @SuppressLint("UseCompatLoadingForDrawables")
     fun changeTextField(
         editText: TextInputEditText,
         textField: TextInputLayout,
