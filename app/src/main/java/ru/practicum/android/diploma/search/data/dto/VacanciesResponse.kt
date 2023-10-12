@@ -1,11 +1,11 @@
 package ru.practicum.android.diploma.search.data.dto
 
-import ru.practicum.android.diploma.search.data.dto.response_models.VacancyItemDto
+import ru.practicum.android.diploma.search.data.dto.response_models.VacancyItem
 
 
 data class VacanciesResponse(
     val found: Int,
-    val items: List<VacancyItemDto>,
+    val items: List<VacancyItem>,
     val page: Int,
     val pages: Int,
     val per_page: Int,
