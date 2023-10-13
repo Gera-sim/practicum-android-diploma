@@ -7,6 +7,7 @@ import ru.practicum.android.diploma.db.data.entity.VacancyEntity
 import ru.practicum.android.diploma.db.domain.AppDB
 import ru.practicum.android.diploma.db.domain.api.VacancyDbRepository
 import ru.practicum.android.diploma.db.domain.models.Vacancy
+import ru.practicum.android.diploma.search.data.dto.response_models.VacancyItem
 import ru.practicum.android.diploma.vacancy.domain.models.VacancyDetails
 
 class VacancyDbRepositoryImpl(

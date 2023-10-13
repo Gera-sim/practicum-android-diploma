@@ -3,28 +3,39 @@ package ru.practicum.android.diploma.db.data.converter
 import android.annotation.SuppressLint
 import ru.practicum.android.diploma.db.data.entity.VacancyEntity
 import ru.practicum.android.diploma.db.domain.models.Vacancy
+import ru.practicum.android.diploma.search.data.dto.response_models.Salary
+import ru.practicum.android.diploma.search.data.dto.response_models.VacancyItem
 import ru.practicum.android.diploma.vacancy.domain.models.*
 import java.text.*
 import java.util.Date
 import java.util.Locale
 
 class VacancyDbConverter {
-    fun map(vacancyEntity: VacancyEntity): Vacancy {
-        return Vacancy(
+    fun map(vacancyEntity: VacancyEntity): VacancyItem {
+        return VacancyItem(
             id = vacancyEntity.id,
+            area = Area(name = vacancyEntity.area),
             name = vacancyEntity.name,
             city = vacancyEntity.city,
+            salary = Salary(
+                currency = vacancyEntity.salaryCurrency,
+                from = vacancyEntity.salaryFrom,
+                to = vacancyEntity.salaryTo
+            ),
+            employer = Employer(
+                name = vacancyEntity.employerName,
+                logoUrls = LogoUrls(
+                    original = vacancyEntity.originalLogo
+                )
+            ),
             employerName = vacancyEntity.employerName,
-            employerLogoUrl = vacancyEntity.employerLogoUrl,
-            salaryCurrency = vacancyEntity.salaryCurrency,
-            salaryFrom = createValue(vacancyEntity.salaryFrom),
-            salaryTo = createValue(vacancyEntity.salaryTo),
             found = 0,
-            pages = 0
+            employerLogoUrl = vacancyEntity.employerLogoUrl,
+            pages = 0,
         )
     }
 
-    private fun getContacts(vacancyEntity: VacancyEntity): Contacts? {
+       private fun getContacts(vacancyEntity: VacancyEntity): Contacts? {
         if (vacancyEntity.contactEmail.isNullOrEmpty() && vacancyEntity.contactName.isNullOrEmpty() && getPhonesList(
                 vacancyEntity
             ).isNullOrEmpty()
@@ -75,7 +86,7 @@ class VacancyDbConverter {
     }
 
     //Форматтеры:
-    private fun getContactPhone(phones: Array<Phone>?): String {
+    private fun getContactPhone(phones: List<Phone>?): String {
         if (phones.isNullOrEmpty()) return ""
         val firstPhoneContact = phones[0]
         val phone =
@@ -87,12 +98,12 @@ class VacancyDbConverter {
         return phone
     }
 
-    private fun getContactComment(phones: Array<Phone>?): String? {
+    private fun getContactComment(phones: List<Phone>?): String? {
         if (phones.isNullOrEmpty()) return ""
         return phones[0].comment
     }
 
-    private fun getKeySkillsStr(keySkills: Array<KeySkill>): String {
+    private fun getKeySkillsStr(keySkills: List<KeySkill>): String {
         var keySkillStr = ""
         keySkills.forEach { keySkill ->
             if (!keySkill.name.isNullOrEmpty()) keySkillStr += keySkill.name + ", "
@@ -101,7 +112,7 @@ class VacancyDbConverter {
         return keySkillStr.dropLast(2)
     }
 
-    private fun getPhonesList(vacancyEntity: VacancyEntity): Array<Phone>? {
+    private fun getPhonesList(vacancyEntity: VacancyEntity): List<Phone>? {
         if (vacancyEntity.contactPhones.isNullOrEmpty()) return null
         val phone = vacancyEntity.contactPhones
         val country = phone[1].toString()
@@ -110,7 +121,7 @@ class VacancyDbConverter {
         val comment = vacancyEntity.contactComment
         val phonesList = arrayListOf<Phone>()
         phonesList.add(Phone(city, country, number, comment))
-        return phonesList.toTypedArray()
+        return phonesList.toList()
     }
 
     private fun getSchedule(vacancyEntity: VacancyEntity): Schedule? {
@@ -118,14 +129,10 @@ class VacancyDbConverter {
         else return Schedule(name = vacancyEntity.schedule)
     }
 
-    private fun getKeySkillsList(vacancyEntity: VacancyEntity): Array<KeySkill> {
-        if (vacancyEntity.keySkillsList.isNullOrEmpty()) return arrayOf<KeySkill>()
-        val keySkills = arrayListOf<KeySkill>()
+    private fun getKeySkillsList(vacancyEntity: VacancyEntity): List<KeySkill> {
+        if (vacancyEntity.keySkillsList.isNullOrEmpty()) return emptyList()
         val keySkillsNameList = vacancyEntity.keySkillsList.split(",").toList()
-        keySkillsNameList.forEach { keySkillsName ->
-            keySkills.add(KeySkill(name = keySkillsName))
-        }
-        return keySkills.toTypedArray()
+        return keySkillsNameList.map { KeySkill(name = it.trim()) }
     }
 
     private fun getExperience(vacancyEntity: VacancyEntity): Experience? {
