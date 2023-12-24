@@ -163,7 +163,6 @@ hhAccessToken=my_access_token
 ## Contents & Libraries
 - Kotlin
 - MVVM
-- Peko
 - ViewModel
 - Google navigation component
 - Room
