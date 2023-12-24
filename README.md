@@ -3,23 +3,6 @@
 Проект представляет собой стартовую точку для разработки дипломного проекта Яндекс.Практикума по
 курсу ["Android-разработчик"](https://practicum.yandex.ru/android-developer/).
 
-## Contents & Libraries
-- Kotlin
-- MVVM
-- Peko
-- ViewModel
-- Google navigation component
-- Room
-- Koin
-- Coroutines Moxy
-- Flow
-- Okhttp
-- Retrofit2
-- GSON
-- Glide
-- Kotlinx-serialization
-- Jetpack Navigation Component Fragments
-
 # Предварительная настройка проекта
 
 ## Добавление секретного токена для API HeadHunter
@@ -176,3 +159,20 @@ hhAccessToken=my_access_token
 ## Экран информации о команде разработчиков
 
 На экране отображается статический список людей, участвовавших в разработке приложения.
+
+## Contents & Libraries
+- Kotlin
+- MVVM
+- Peko
+- ViewModel
+- Google navigation component
+- Room
+- Koin
+- Coroutines Moxy
+- Flow
+- Okhttp
+- Retrofit2
+- GSON
+- Glide
+- Kotlinx-serialization
+- Jetpack Navigation Component Fragments
