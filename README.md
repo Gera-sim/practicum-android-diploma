@@ -1,4 +1,4 @@
-![Screenshot_4](https://github.com/Gera-sim/practicum-android-diploma/assets/68176596/af390989-5a1b-4bf6-b7da-9a4d5eaf2b34)# Дипломный проект Яндекс.Практикума по курсу "Android-разработчик"
+# Дипломный проект Яндекс.Практикума по курсу "Android-разработчик"
 
 Проект представляет собой стартовую точку для разработки дипломного проекта Яндекс.Практикума по
 курсу ["Android-разработчик"](https://practicum.yandex.ru/android-developer/).
