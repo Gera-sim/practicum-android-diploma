@@ -1,4 +1,4 @@
-# Дипломный проект Яндекс.Практикума по курсу "Android-разработчик"
+![Screenshot_4](https://github.com/Gera-sim/practicum-android-diploma/assets/68176596/af390989-5a1b-4bf6-b7da-9a4d5eaf2b34)# Дипломный проект Яндекс.Практикума по курсу "Android-разработчик"
 
 Проект представляет собой стартовую точку для разработки дипломного проекта Яндекс.Практикума по
 курсу ["Android-разработчик"](https://practicum.yandex.ru/android-developer/).
@@ -76,6 +76,9 @@ hhAccessToken=my_access_token
 - (\*) В целях экономии трафика пользователей загрузка результатов поиска должна происходить постранично (paging) по 20
   элементов за раз. Запрос на следующую страницу должен происходить, когда пользователь доскроллил до последнего
   доступного элемента списка (или чуть раньше).
+  ![Screenshot_1](https://github.com/Gera-sim/practicum-android-diploma/assets/68176596/72e12f9c-f2a0-43a1-ac1d-d503d7869fb0)
+  ![Screenshot_2](https://github.com/Gera-sim/practicum-android-diploma/assets/68176596/e2d5bd69-7f45-4773-9c40-e39033a30b95)
+
 
 ## Фильтрация -- набор экранов фильтров поиска
 
@@ -86,6 +89,9 @@ hhAccessToken=my_access_token
 - Отрасль - сфера деятельности организации, разместившей вакансию.
 - Уровень зарплаты - уровень ЗП, соответствующий указанному в вакансии.
 - Возможность скрывать вакансии, для которых не указана ЗП.
+![Screenshot_3](https://github.com/Gera-sim/practicum-android-diploma/assets/68176596/9af505af-ab85-445a-956d-afcac12e7d2c)
+![Screenshot_4](https://github.com/Gera-sim/practicum-android-diploma/assets/68176596/a6abfb49-2cf5-4b5a-904c-54252917382f)
+![Screenshot_5](https://github.com/Gera-sim/practicum-android-diploma/assets/68176596/3c357444-30e1-4a29-a6b8-e0b5e17cadee)
 
 ### Особенности экранов
 
@@ -121,6 +127,7 @@ hhAccessToken=my_access_token
 
 Также пользователь может ознакомиться со списком похожих вакансий, поделиться ссылкой на данную вакансию, а также
 связаться с работодателем через указанные контакты.
+![Screenshot_6](https://github.com/Gera-sim/practicum-android-diploma/assets/68176596/98ae0c76-cfb5-4960-8c60-3b7c5f9db28d)
 
 ### Особенности экрана
 
@@ -145,6 +152,7 @@ hhAccessToken=my_access_token
 предложению. Добавить вакансию в "избранное" (или удалить из "избранного") можно на экране "Вакансия". На экране списка
 избранных вакансий пользователь может удалить вакансию из закладок. Все вакансии, добавленные в закладки, можно увидеть
 на отдельном экране в приложении.
+![Screenshot_7](https://github.com/Gera-sim/practicum-android-diploma/assets/68176596/57bb62bd-f807-4387-8310-ecc83b458541)
 
 ### Особенности экрана
 
@@ -159,6 +167,8 @@ hhAccessToken=my_access_token
 ## Экран информации о команде разработчиков
 
 На экране отображается статический список людей, участвовавших в разработке приложения.
+![Screenshot_8](https://github.com/Gera-sim/practicum-android-diploma/assets/68176596/ae014ffd-9695-4e09-b5ff-76190fe6b371)
+
 
 ## Contents & Libraries
 - Kotlin
